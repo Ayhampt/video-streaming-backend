@@ -6,6 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
+
 //generateAccessAndRefereshTokens
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -435,14 +436,14 @@ const getWatchHistory = asyncHandler(async (req, res) => {
     },
     {
       $lookup: {
-        from: "videos",
+        from: "video",
         localField: "watchHistory",
         foreignField: "_id",
         as: "watchHistory",
         pipeline: [
           {
             $lookup: {
-              from: "users",
+              from: "user",
               localField: "owner",
               foreignField: "_id",
               as: "owner",

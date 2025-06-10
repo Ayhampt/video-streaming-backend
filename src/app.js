@@ -47,10 +47,14 @@ app.use(cookieParser())
 import heathcheckRouter from "./routes/healthcheck.routes.js"
 import userRouter from "./routes/user.routes.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
+import videoRouter from "./routes/video.routes.js"
+import tweetRouter from "./routes/tweet.routes.js"
+
 
 app.use("/api/v1/healthcheck",heathcheckRouter)
 app.use("/api/v1/user", userRouter);
-
+app.use("/api/v1/video",videoRouter);
+app.use("/api/v1/tweet",tweetRouter)
 
 
 app.use(errorHandler)
