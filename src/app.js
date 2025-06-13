@@ -49,12 +49,17 @@ import userRouter from "./routes/user.routes.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import videoRouter from "./routes/video.routes.js"
 import tweetRouter from "./routes/tweet.routes.js"
+import  SubscriptionRouter  from "./routes/subscription.routes.js";
+import playListRouter from "./routes/playlist.routes.js"
 
 
 app.use("/api/v1/healthcheck",heathcheckRouter)
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/video",videoRouter);
-app.use("/api/v1/tweet",tweetRouter)
+app.use("/api/v1/tweet",tweetRouter);
+app.use("/api/v1/sub",SubscriptionRouter)
+app.use("/api/v1/playlist",playListRouter)
+
 
 
 app.use(errorHandler)

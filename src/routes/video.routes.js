@@ -10,7 +10,7 @@ import {
 } from "../controllers/video.controllers.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { asyncHandler } from "../utils/acyncHandler.js";
-import { writeTweet } from "../controllers/tweet.controllers.js";
+
 
 const router = Router();
 
@@ -34,6 +34,6 @@ router
   .patch(verifyJWT, upload.single("thumbnail"), updateVideo);
 router.route("/delete/:videoId").post(verifyJWT, deleteTheVideo);
 router.route("/t/:videoId").post(verifyJWT,togglePublishStatus);
-router.route("/tweet").post(verifyJWT, writeTweet);
+
 
 export default router;

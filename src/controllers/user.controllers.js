@@ -338,12 +338,6 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Cover image updated successfully"));
 });
 
-
-
-
-
-
-
 //agrigation pipeline
 //channelProfile
 const getuserChannelProfile = asyncHandler(async (req, res) => {

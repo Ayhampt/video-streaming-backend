@@ -194,13 +194,16 @@ const updateVideo = asyncHandler(async (req, res) => {
 const deleteTheVideo = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
 
-  if (!videoId ) {
+  if (!videoId) {
     throw new ApiError(400, "video Id is required or you are not authorized" );
   }
-  const video = await Video.findByIdAndDelete(videoId);
-  if (!video) {
+  const video = await Video.findById(videoId);
+  if (video.owner.toString() != req.user._id.toString()) {
     throw new ApiError(404, "video not found");
   }
+
+  await Video.findByIdAndDelete(videoId)
+  
   return res
     .status(200)
     .json(new ApiResponse(200, video, "video deleted sucessfully"));
@@ -229,19 +232,12 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
       new: true,
     }
   );
-  
-
-  
 
   return res
     .status(200)
     .json(new ApiResponse(200, video, "Video publish status toggled"));
 })
 
-
-
-
-  
 
 export {
   PublishAVideo,
