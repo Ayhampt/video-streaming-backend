@@ -13,7 +13,7 @@ const createPlaylist = asyncHandler(async (req, res) => {
   }
   const playlist = await Playlist.create({
     owner: req.user._id,
-    name: playlistName,
+    playlistName: playlistName,
     description: description,
   });
   if (!playlist) {
@@ -174,7 +174,7 @@ const updatePlaylist = asyncHandler(async (req, res) => {
   if (!name || !description) {
     throw new ApiError("name or description required");
   }
-  const playlist = await Playlist.findByIdAndUpdate(
+  const playlist = await Playlist.findOneAndUpdate(
     { _id: playlistId, owner: req.user._id },
 
     {

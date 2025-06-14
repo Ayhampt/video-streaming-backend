@@ -2,7 +2,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.models.js";
 import { asyncHandler } from "../utils/acyncHandler.js";
 import { Subscription } from "../models/subscription.models.js";
-import mongoose, { isValidObjectId } from "mongoose";
+import mongoose from "mongoose";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 //toggleSubscription
@@ -114,7 +114,7 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
     throw new ApiError(400, "the subscriberId requird");
   }
 
-  const subscriber = await Subscription.findById(subscriberId);
+  const subscriber = await User.findById(subscriberId);
 
   if (!subscriber) {
     throw new ApiError(400, "no subscriber found");
@@ -122,11 +122,13 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
 
   const channelList = await Subscription.aggregate([
     {
-      $match: new mongoose.Types.ObjectId(subscriberId),
+      $match: {
+        subscriber: new mongoose.Types.ObjectId(subscriberId),
+      },
     },
     {
       $lookup: {
-        from: "User",
+        from: "users",
         localField: "channel",
         foreignField: "_id",
         as: "subscribedTo",

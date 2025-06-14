@@ -3,13 +3,42 @@ import { Like } from "../models/like.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import Comment from "../models/comment.models.js";
+import {Comment} from "../models/comment.models.js";
+import { Video } from "../models/video.model.js";
+import { Tweet } from "../models/tweet.models.js";
 
 const toggleVideoLike = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
 
-  const videoId = 
-  
+  if(!videoId){
+    throw new ApiError(400,"video id required")
+  }
+  const user = req.user._id
+  if(!user){
+    throw new ApiError(400,"you need to login")
+  }
+  const video = await Video.findById(videoId)
+  if(!video){
+    throw new ApiError(400,"no video find")
+  }
+  const existingLike = await Like.findOne({
+    $or:[
+      {Likedby:user},
+      {video:videoId}
+    ]
+  })
+
+  if(existingLike){
+    await Like.findByIdAndDelete(existingLike._id)
+  }
+  await Like.create({
+    Likedby:user,
+    video:videoId
+  })
+
+   return res
+     .status(200)
+     .json(new ApiResponse(200, null, "video like toggled successfully"));
 });
 
 const toggleCommentLike = asyncHandler(async (req, res) => {
@@ -31,8 +60,10 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
   }
 
   const existingLike = await Like.findOne({
-    comment: commentId,
-    Likedby: userId,
+    $or:[
+      {Likedby : userId},
+      {comment:commentId}
+    ]
   });
 
   if (existingLike) {
@@ -46,16 +77,42 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, null, "like toggled successfully"));
+    .json(new ApiResponse(200, null, "comment like toggled successfully"));
 });
 
 const toggleTweetLike = asyncHandler(async (req, res) => {
   const { tweetId } = req.params;
-  //TODO: toggle like on tweet
+  if(!tweetId){
+    throw new ApiError(400,"tweet id required")
+  }
+  const user = req.user._id
+  const tweet = await Tweet.findById(tweetId)
+  if(!tweet){
+    throw new ApiError(400,"no tweet exist")
+  }
+  const existingLike = await Like.findOne({
+    $or:[
+      {Likedby:user},
+      {tweet:tweetId}
+    ]
+  })
+  if(existingLike){
+    await Like.findByIdAndDelete(existingLike._id)
+  }
+  await Like.create({
+    tweet:tweetId,
+    Likedby:user
+  })
+  return res
+  .status(200)
+  .json(new ApiResponse(200,null,"tweet like toggled sucessfully"))
 });
 
 const getLikedVideos = asyncHandler(async (req, res) => {
-  //TODO: get all liked videos
+  
+
+
+  
 });
 
 export { toggleCommentLike, toggleTweetLike, toggleVideoLike, getLikedVideos };
