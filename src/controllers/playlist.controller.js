@@ -169,6 +169,7 @@ const updatePlaylist = asyncHandler(async (req, res) => {
   const { name, description } = req.body;
 
   if (!playlistId) {
+    
     throw new ApiError("playlist id missing");
   }
   if (!name || !description) {

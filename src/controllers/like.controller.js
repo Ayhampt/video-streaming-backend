@@ -109,6 +109,45 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
 });
 
 const getLikedVideos = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+
+  if (!userId) {
+    throw new ApiError(400, "missing userId");
+  }
+  const user = await findById(userId);
+  if(!user){
+    throw new ApiError(404,"user not found")
+  }
+
+  const likedVideos = await Like.agregate([
+    {
+      $match: {
+        Likedby: userId,
+      },
+    },
+    {
+      $lookup: {
+        from: "videos",
+        localField: "video",
+        foreignField: "_id",
+        as: "video",
+      },
+    },
+    {
+      $unwind: "$video",
+    },
+    {
+      $project:{
+        _id: 0,
+        videoId: "$video._id",
+        title: "$video.title",
+        description: "$video.description",
+      }
+    }
+  ]);
+  return res
+    .status(200)
+    .json(new ApiResponse(200, likedVideos, "Liked videos fetched successfully"));
   
 
 

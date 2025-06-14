@@ -12,7 +12,7 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.post("/playlist", verifyJWT, createPlaylist);
+router.post("/create", verifyJWT, createPlaylist);
 
 router.get("/getuser", verifyJWT, getUserPlaylists);
 
