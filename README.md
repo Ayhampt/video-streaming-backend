@@ -22,7 +22,22 @@ Delete videos from the platform.
 Toggle the publish status of a video (public or private).
 
 
-<h3>More coming Up...</h3>
+###  Comments
+- Add comments to videos
+- Edit or delete your own comments
+- View all comments on a video
+  
+### Tweet 
+- create a tweet
+- edit the tweet
+- delete the tweet
+
+### Like
+- Like video,comments,tweet
+
+### Subscriptions
+- Subscribe/unsubscribe from other users
+- View your subscriptions
 
 
 
@@ -56,3 +71,10 @@ Development Utility: Nodemon
 
 Environment Variables: dotenv
 
+Api testing : Postman
+
+## Entity Relationship Diagram (ERD)
+
+Understand how the core entities of the system relate to each other:
+
+👉 [View ERD Diagram on Eraser](https://app.eraser.io/workspace/bQDUzm1Qn07F98vmVrjb?origin=share)
